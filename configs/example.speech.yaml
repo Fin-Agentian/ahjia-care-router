@@ -1,0 +1,4 @@
+# Simulated Whisper output for `python -m ahjia demo --speech` (format: DESIGN.md "Speech file").
+# t is seconds from the start of the video.
+- {t: 21.5, text: "I can't get up", source: elder, directed: false}
+- {t: 41.0, text: "I'm OK", source: elder, directed: true}

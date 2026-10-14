@@ -1,0 +1,13 @@
+# Scripted: 救命 -> A1 + A4 + A5 at once (P:247).
+name: help_zh
+title: "Scripted: '救命' (help) escalates at once"
+source: "P:247"
+start_clock: "09:30:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 30
+labels:
+  - {t: 5, kind: high_risk, what: "SOS word 救命"}
+  - {t: 5, kind: sos_immediate, what: "救命"}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: 5, speech: {text: "救命", source: elder, directed: false, lang: zh}}

@@ -1,0 +1,13 @@
+# Scripted: English soft SOS word -> A1 + A4, then the 30 s rule -> A5 (P:247).
+name: dizzy_en
+title: "Scripted: 'I feel dizzy', no answer for 30 s"
+source: "P:247"
+start_clock: "11:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 4, kind: high_risk, what: "SOS word dizzy"}
+  - {t: 4, kind: no_answer, what: "no answer for 30 s -> A5", window_s: 45}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: 4, speech: {text: "I feel dizzy", source: elder, directed: false}}

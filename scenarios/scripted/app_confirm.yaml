@@ -1,0 +1,13 @@
+# Scripted: family confirms in the app -> cleared_by_app (P:250).
+name: app_confirm
+title: "Scripted: fall, family confirms in the app"
+source: "P:250"
+start_clock: "16:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: fall}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: 5, camera: living, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: 20, app_confirm: true}

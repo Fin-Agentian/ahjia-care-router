@@ -1,0 +1,15 @@
+# Scripted: "I feel dizzy" -> A1 + A4 and the 30 s rule. Standing, the elder answers
+# "I'm OK, I'm not dizzy anymore": a negated symptom word is not a new SOS, so this is an
+# answer (no A5) and an "I'm OK"; standing >= 5 s -> cleared by the elder (P:247-249).
+name: ok_not_dizzy
+title: "Scripted: 'I'm OK, I'm not dizzy anymore' (an answer, not a new SOS)"
+source: "P:247-249"
+start_clock: "14:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: "SOS word dizzy"}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: 5, speech: {text: "I feel dizzy", source: elder, directed: false}}
+  - {t: 10, speech: {text: "I'm OK, I'm not dizzy anymore", source: elder, directed: true}}

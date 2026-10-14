@@ -1,0 +1,15 @@
+# Scripted probe for KPI 4 (GenAI interference): she asks AhJia for a story in the
+# daytime, and falls while the LLM is answering. Written to probe contention, so it
+# is reported inside the scripted set, not as a demo scenario.
+name: talk_then_fall
+title: "Scripted probe: falls while the LLM is answering"
+source: "P:439 (KPI 4)"
+start_clock: "15:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 4, kind: high_risk, what: fall}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: 2, speech: {text: "AhJia, tell me a story about the old days.", source: elder, directed: true}}
+  - {t: 4, camera: living, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}

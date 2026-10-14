@@ -1,0 +1,13 @@
+# Scripted: at the front door at 03:00 -> A1 + A4 (+A3) (P:146).
+name: night_front_door
+title: "Scripted: night exit at the front door"
+source: "P:146, P:463"
+start_clock: "03:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 6, kind: high_risk, what: "night exit"}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 6, camera: hallway, persons: []}
+  - {t: 6, camera: front_door, persons: [{track_id: 1, identity: elder, posture: stand, zone: front_door}]}

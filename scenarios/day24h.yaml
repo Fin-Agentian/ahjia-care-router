@@ -1,0 +1,173 @@
+# SYNTHETIC 24 h day of one elder living alone. Hand-written to be plausible,
+# not recorded. Used for KPI 1 (24 h average power) and as a fair, mixed load:
+# night bathroom trips, meals, two TV blocks (a TV drama shouts "help" once),
+# a nap on the sofa, a caregiver visit, a family visit, one fall that the elder
+# clears herself, and a question to AhJia at night.
+# The events were written before any strategy was run; the fall happens in the
+# afternoon with the TV off. A TV voice saying "help" is treated as real (the
+# system cannot tell a TV from the elder yet), so the TV "help" raises A1+A4+A5;
+# the elder says "I'm OK" and stands up for a moment, which clears it (P:249).
+#
+# Cameras: bedroom (zones bed, bedside), living (sofa, living, kitchen),
+# hallway (hallway, bathroom_door; the bathroom has no camera), front_door.
+# t may be a number of seconds or a wall-clock "HH:MM:SS" (start_clock + t).
+# "repeat" expands one event every every_s seconds until "until".
+name: day24h
+title: "Synthetic 24 h day, one elder living alone"
+source: "synthetic (P:461-463 lists the kinds of events)"
+synthetic: true
+start_clock: "00:00:00"
+cameras: [bedroom, living, hallway, front_door]
+elder_alone: true
+duration_s: 86400
+labels:
+  - {t: "10:12:10", kind: benign, what: "TV drama shouts 'help'"}
+  - {t: "12:41:00", kind: benign, what: "nap on the sofa"}
+  - {t: "16:10:05", kind: high_risk, what: "fall in the hallway"}
+  - {t: "17:30:00", kind: greeting, what: "daughter arrives"}
+events:
+  # ---- night: asleep, two bathroom trips
+  - {t: "00:00:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: lie, zone: bed}]}
+  - {t: "02:40:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "02:40:20", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "02:40:35", camera: bedroom, persons: []}
+  - {t: "02:40:35", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "02:40:50", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "02:41:00", camera: hallway, persons: []}
+  - {t: "02:47:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "02:47:10", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "02:47:25", camera: hallway, persons: []}
+  - {t: "02:47:25", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "02:47:40", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "02:48:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: lie, zone: bed}]}
+  - {t: "04:55:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "04:55:20", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "04:55:35", camera: bedroom, persons: []}
+  - {t: "04:55:35", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "04:55:50", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "04:56:00", camera: hallway, persons: []}
+  - {t: "05:04:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "05:04:10", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "05:04:25", camera: hallway, persons: []}
+  - {t: "05:04:25", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "05:04:40", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "05:05:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: lie, zone: bed}]}
+  # ---- morning: wake up, bathroom, breakfast
+  - {t: "06:35:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "06:36:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "06:36:20", camera: bedroom, persons: []}
+  - {t: "06:36:20", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "06:36:40", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "06:37:00", camera: hallway, persons: []}
+  - {t: "06:49:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "06:49:15", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "06:49:30", camera: hallway, persons: []}
+  - {t: "06:49:30", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "07:10:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: kitchen}]}
+  - {t: "07:40:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "07:45:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "08:00:00", speech: {text: "AhJia, good morning. What's the weather today?", source: elder, directed: true}}
+  - {t: "08:01:30", speech: {text: "Thank you.", source: elder, directed: true}}
+  - {t: "09:02:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "09:05:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  # ---- morning TV; a drama shouts "help" (TV source, must not alarm)
+  - {t: "09:30:00", speech: {text: "Good morning and welcome to the show.", source: tv, directed: false},
+     repeat: {every_s: 30, until: "10:30:00"}}
+  - {t: "10:00:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "10:01:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "10:12:10", speech: {text: "Help! Somebody help me!", source: tv, directed: false}}
+  - {t: "10:12:20", speech: {text: "I'm OK, that was the TV.", source: elder, directed: true}}
+  - {t: "10:12:25", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "10:12:40", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  # ---- caregiver visit
+  - {t: "10:30:00", camera: front_door, persons: [{track_id: 3, identity: caregiver, posture: stand, zone: front_door}]}
+  - {t: "10:30:30", camera: front_door, persons: []}
+  - {t: "10:30:30", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 3, identity: caregiver, posture: stand, zone: living}]}
+  - {t: "10:32:00", speech: {text: "Good morning, auntie. How did you sleep?", source: caregiver, directed: false}}
+  - {t: "10:32:20", speech: {text: "Not bad, I got up twice.", source: elder, directed: false}}
+  - {t: "10:45:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living},
+                                              {track_id: 3, identity: caregiver, posture: stand, zone: living}]}
+  - {t: "10:46:00", camera: living, persons: [{track_id: 3, identity: caregiver, posture: stand, zone: living}]}
+  - {t: "10:46:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "10:46:15", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "10:46:30", camera: hallway, persons: []}
+  - {t: "10:56:30", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "10:56:45", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "10:57:00", camera: hallway, persons: []}
+  - {t: "10:57:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 3, identity: caregiver, posture: sit, zone: living}]}
+  - {t: "11:25:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 3, identity: caregiver, posture: stand, zone: living}]}
+  - {t: "11:28:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "11:28:00", camera: front_door, persons: [{track_id: 3, identity: caregiver, posture: stand, zone: front_door}]}
+  - {t: "11:28:30", camera: front_door, persons: []}
+  # ---- lunch, nap on the sofa (lying on the sofa is not a fall)
+  - {t: "12:00:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "12:15:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: kitchen}]}
+  - {t: "12:40:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "12:41:00", camera: living, persons: [{track_id: 1, identity: elder, posture: lie, zone: sofa}]}
+  - {t: "13:40:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "14:00:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "14:00:30", camera: living, persons: []}
+  - {t: "14:00:30", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "14:00:45", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "14:01:00", camera: hallway, persons: []}
+  - {t: "14:06:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "14:06:15", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "14:06:30", camera: hallway, persons: []}
+  - {t: "14:06:30", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "15:00:00", speech: {text: "AhJia, remind me to call my sister tonight.", source: elder, directed: true}}
+  # ---- afternoon fall in the hallway; she says she is OK and gets up herself
+  - {t: "16:10:00", camera: living, persons: []}
+  - {t: "16:10:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "16:10:05", camera: hallway, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: "16:10:20", speech: {text: "I'm OK, I'm OK.", source: elder, directed: true}}
+  - {t: "16:10:50", camera: hallway, persons: [{track_id: 1, identity: elder, posture: sit, zone: floor}]}
+  - {t: "16:11:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "16:11:30", camera: hallway, persons: []}
+  - {t: "16:11:30", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "16:12:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "16:40:00", camera: bedroom, persons: []}
+  - {t: "16:40:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "16:40:15", camera: hallway, persons: []}
+  - {t: "16:40:15", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  # ---- family visit
+  - {t: "17:30:00", camera: front_door, persons: [{track_id: 2, identity: family, posture: stand, zone: front_door}]}
+  - {t: "17:30:20", camera: front_door, persons: []}
+  - {t: "17:30:20", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 2, identity: family, posture: stand, zone: living}]}
+  - {t: "17:31:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 2, identity: family, posture: sit, zone: sofa}]}
+  - {t: "17:32:00", speech: {text: "Mom, I brought your favourite buns.", source: family, directed: false}}
+  - {t: "17:33:00", speech: {text: "Oh, you are so kind.", source: elder, directed: false}}
+  - {t: "17:40:00", speech: {text: "AhJia, did Mom take her medicine this morning?", source: family, directed: true}}
+  - {t: "17:50:00", speech: {text: "We should visit the clinic next week.", source: family, directed: false},
+     repeat: {every_s: 120, until: "18:26:00"}}
+  - {t: "18:28:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                              {track_id: 2, identity: family, posture: stand, zone: living}]}
+  - {t: "18:29:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "18:29:00", camera: front_door, persons: [{track_id: 2, identity: family, posture: stand, zone: front_door}]}
+  - {t: "18:29:20", camera: front_door, persons: []}
+  # ---- dinner, evening TV, bed
+  - {t: "18:40:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "18:45:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: kitchen}]}
+  - {t: "19:15:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "19:25:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "19:30:00", speech: {text: "Tonight on the evening drama...", source: tv, directed: false},
+     repeat: {every_s: 30, until: "21:30:00"}}
+  - {t: "20:15:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "20:17:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: kitchen}]}
+  - {t: "20:20:00", camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: "21:30:00", camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: "21:31:00", camera: living, persons: []}
+  - {t: "21:31:00", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "21:31:15", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "21:31:30", camera: hallway, persons: []}
+  - {t: "21:41:30", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: "21:41:45", camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: "21:42:00", camera: hallway, persons: []}
+  - {t: "21:42:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: stand, zone: bedside}]}
+  - {t: "21:45:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: sit, zone: bed}]}
+  - {t: "22:10:00", camera: bedroom, persons: [{track_id: 1, identity: elder, posture: lie, zone: bed}]}
+  - {t: "23:30:00", speech: {text: "AhJia, what time is it?", source: elder, directed: true}}

@@ -1,0 +1,12 @@
+# Scripted: lying down on the sofa is rest, not a fall (P:144, P:462).
+name: sofa_lie_not_fall
+title: "Scripted: lies down on the sofa (not a fall)"
+source: "P:144, P:462"
+start_clock: "13:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 30
+labels:
+  - {t: 3, kind: benign, what: "lies down on the sofa"}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: stand, zone: living}]}
+  - {t: 3, camera: living, persons: [{track_id: 1, identity: elder, posture: lie, zone: sofa}]}

@@ -1,0 +1,15 @@
+# Scripted: "I'm OK", sits up (does not count), then stands >= 5 s -> cleared by the elder (P:249).
+name: ok_and_upright
+title: "Scripted: says I'm OK and gets up (cleared by the elder)"
+source: "P:248-251"
+start_clock: "15:30:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: fall}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 5, camera: hallway, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: 12, speech: {text: "我沒事", source: elder, directed: true, lang: zh}}
+  - {t: 20, camera: hallway, persons: [{track_id: 1, identity: elder, posture: sit, zone: floor}]}
+  - {t: 24, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}

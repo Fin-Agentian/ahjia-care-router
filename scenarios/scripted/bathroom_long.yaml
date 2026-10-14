@@ -1,0 +1,15 @@
+# Scripted: in the bathroom too long (30 min, shortened by time_scale 0.01 to 18 s):
+# A1 check-in, no answer 60 s -> A4, then the 30 s rule -> A5 (P:145, P:244).
+name: bathroom_long
+title: "Scripted: in the bathroom >= 30 min (time_scale 0.01)"
+source: "P:145, P:244"
+start_clock: "10:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+time_scale: 0.01
+duration_s: 150
+labels:
+  - {t: 24, kind: inactivity, what: "bathroom >= 30 min (scaled)", window_s: 70}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 3, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: bathroom_door}]}
+  - {t: 6, camera: hallway, persons: []}

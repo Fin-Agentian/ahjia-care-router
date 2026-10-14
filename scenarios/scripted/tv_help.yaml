@@ -1,0 +1,14 @@
+# Scripted: someone on TV shouts "help" (P:462). The system cannot tell a TV from the
+# elder yet, so this is treated as real: A1 + A4 + A5, counted as a family false alarm.
+name: tv_help
+title: "Scripted: TV shouts 'help' (treated as real; a false alarm)"
+source: "P:462"
+start_clock: "20:00:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 30
+labels:
+  - {t: 5, kind: benign, what: "TV shouts help"}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: 5, speech: {text: "Help! Somebody help!", source: tv, directed: false}}
+  - {t: 15, speech: {text: "Stay with me, the ambulance is coming.", source: tv, directed: false}}

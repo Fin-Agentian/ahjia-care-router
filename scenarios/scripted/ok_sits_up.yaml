@@ -1,0 +1,15 @@
+# Scripted: after a fall she says "I'm OK" and only sits up on the floor. She answered, so
+# there is no A5 (P:247); sitting is not standing, so the alert is NOT cleared (P:249).
+name: ok_sits_up
+title: "Scripted: says I'm OK and only sits up (answered, not cleared)"
+source: "P:247-249"
+start_clock: "15:30:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: fall}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 5, camera: hallway, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: 12, speech: {text: "I'm OK", source: elder, directed: true}}
+  - {t: 18, camera: hallway, persons: [{track_id: 1, identity: elder, posture: sit, zone: floor}]}

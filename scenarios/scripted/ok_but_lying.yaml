@@ -1,0 +1,13 @@
+# Scripted: after a fall she says "I'm OK" but stays lying -> answered (no A5, P:247) but NOT cleared (P:249).
+name: ok_but_lying
+title: "Scripted: says I'm OK but stays on the floor (no clear)"
+source: "P:248-251"
+start_clock: "15:30:00"
+cameras: [living, hallway, bathroom_door, front_door]
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: fall}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 5, camera: hallway, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: 12, speech: {text: "I'm OK", source: elder, directed: true}}

@@ -1,0 +1,21 @@
+# Scenario 1 (companion path): the daughter comes in and is recognised (P:484-492).
+# Afterwards she talks on the phone and the TV is on: nobody talks to AhJia -> A0.
+name: family_arrives
+title: "Scenario 1: family arrives and is recognised (companion path)"
+source: "P:484-492"
+start_clock: "14:05:00"
+cameras: [living, hallway, bathroom_door, front_door]
+elder_alone: true
+duration_s: 70
+labels:
+  - {t: 5, kind: greeting, what: "daughter enters the living room (T+0)"}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: 5, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                     {track_id: 2, identity: family, posture: stand, zone: living}]}
+  - {t: 20, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa},
+                                      {track_id: 2, identity: family, posture: sit, zone: sofa}]}
+  - {t: 24, speech: {text: "Hi, yes, I'm at Mom's place now. I'll call you back.", source: family, directed: false}}
+  - {t: 30, speech: {text: "And that was the afternoon news.", source: tv, directed: false}}
+  - {t: 36, speech: {text: "Mom, do you want some tea?", source: family, directed: false}}
+  - {t: 50, speech: {text: "AhJia, when is my clinic appointment?", source: elder, directed: true}}

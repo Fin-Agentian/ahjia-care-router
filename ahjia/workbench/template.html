@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AhJia Workbench</title>
+<style>@@STYLE@@</style>
+</head>
+<body>
+<div id="stage">
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><path d="M6 20 L20 7 L34 20 V34 H6 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><circle cx="20" cy="23" r="5" fill="#F2A541"/></svg>
+      <h1>AhJia Care Router <span class="dot">&middot;</span> <em>Workbench</em></h1>
+      <span class="badge">Laptop prototype</span>
+      <span class="badge real">Real Care Router code</span>
+      <span class="badge sim">Hailo-10H timing &amp; power simulated</span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-tab="live" class="tab">Live</button>
+      <button data-tab="compare" class="tab">Compare</button>
+      <button data-tab="how" class="tab">How it works</button>
+    </nav>
+  </header>
+
+  <section class="controlbar">
+    <label class="ctl scn"><span>Scenario</span><select id="scenario"></select></label>
+    <div class="ctl"><span>Strategy</span><div class="seg" id="strategy"></div></div>
+    <div class="ctl transport">
+      <button id="play" class="icon-btn" title="Play / pause (space)"></button>
+      <button id="restart" class="icon-btn" title="Restart"></button>
+    </div>
+    <div class="ctl"><span>Speed</span><div class="seg" id="speed"></div></div>
+    <div class="ctl scrub">
+      <input id="scrubber" type="range" min="0" max="60" step="0.01" value="0" aria-label="time">
+      <div class="clock"><span id="clock">00:00:00</span><small id="tsec">t = 0.0 s</small></div>
+    </div>
+  </section>
+
+  <main id="views">
+    <!-- ======================== LIVE ======================== -->
+    <section class="view" id="view-live">
+      <div class="live-left">
+        <div class="card plan-card">
+          <div class="card-head">
+            <h2>Home <small id="plan-sub">true world state from the scenario file</small></h2>
+            <div class="legend" id="plan-legend"></div>
+          </div>
+          <svg id="plan" viewBox="0 0 1000 500" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="card tl-card">
+          <div class="card-head">
+            <h2>Decisions <small>Care Router output, A0&ndash;A5 ladder</small></h2>
+            <div class="legend" id="tl-legend"></div>
+          </div>
+          <svg id="timeline" viewBox="0 0 1180 252" preserveAspectRatio="none"></svg>
+        </div>
+      </div>
+      <div class="live-right">
+        <div class="card banner" id="banner">
+          <div class="banner-kicker">Alert</div>
+          <div class="banner-state" id="banner-state">ALL CALM</div>
+          <div class="banner-sub" id="banner-sub"></div>
+          <div class="banner-meter" id="banner-meter"><div class="bar"><i id="meter-fill"></i></div><span id="meter-text"></span></div>
+        </div>
+        <div class="card hud-card">
+          <div class="card-head"><h2>HUD <small>the 7 lines on the demo video</small></h2><span class="chip sim">simulated timing</span></div>
+          <pre id="hud"></pre>
+        </div>
+        <div class="chips-row">
+          <div class="genai" id="genai"><span class="genai-k">GenAI</span><span class="genai-v" id="genai-v">off</span><span class="genai-s" id="genai-s"></span></div>
+          <div class="daynight" id="daynight"></div>
+        </div>
+        <div class="card whatif-card">
+          <div class="card-head"><h2>What if&hellip; <small>scripted branches, same rules</small></h2></div>
+          <div id="whatif"></div>
+          <div class="scn-note" id="scn-note"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== COMPARE ======================== -->
+    <section class="view" id="view-compare">
+      <div class="cmp-left">
+        <div class="card" id="kpi-card">
+          <div class="card-head"><h2>KPIs <small>S0 fixed &middot; S1 rules &middot; S2 Care Router</small></h2><span class="chip sim">simulated</span></div>
+          <table class="kpi" id="kpi-table"></table>
+        </div>
+        <div class="card" id="scripted-card">
+          <div class="card-head"><h2>Scripted set <small id="scripted-sub"></small></h2><span class="chip sim">simulated</span></div>
+          <div id="scripted"></div>
+        </div>
+      </div>
+      <div class="cmp-right">
+        <div class="card"><div id="chart-power"></div></div>
+        <div class="cmp-pair">
+          <div class="card"><div id="chart-wakes"></div></div>
+          <div class="card"><div id="chart-cams"></div></div>
+        </div>
+        <div class="card spec-card" id="spec-card"></div>
+      </div>
+    </section>
+
+    <!-- ======================== HOW IT WORKS ======================== -->
+    <section class="view" id="view-how">
+      <div class="how-layers">
+        <div class="layer see"><div class="layer-n">1 &middot; See</div><h3>Perception</h3>
+          <p>Cameras &rarr; pose (YOLOv8, runs for real on the laptop) &rarr; posture and zone.</p>
+          <p>Voice &rarr; text (Whisper; a timed transcript in Stage I).</p>
+          <p class="out">Output: Observation</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="layer care"><div class="layer-n">2 &middot; Care</div><h3>Six care agents</h3>
+          <p>Each agent watches for one kind of risk or need and asks for actions.</p>
+          <p>Fall, inactivity, night exit, visitor, voice SOS, companion.</p>
+          <p class="out">Output: ActionRequest</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="layer decide"><div class="layer-n">3 &middot; Decide</div><h3>Care Router + safety rules</h3>
+          <p>Picks the frame rate per camera, the GenAI window and the actions A0&ndash;A5.</p>
+          <p>Safety rules are fixed code. They never wait for a language model.</p>
+          <p class="out">Output: Decision &rarr; log, HUD, KPIs</p></div>
+      </div>
+      <div class="how-grid">
+        <div class="card"><div class="card-head"><h2>Six care agents</h2></div>
+          <table class="agents">
+            <tr><th>Agent</th><th>Trigger</th><th>Actions</th></tr>
+            <tr><td>fall</td><td>Lying on the floor (not bed or sofa) for 2 s or more</td><td><b class="a a1">A1</b><b class="a a4">A4</b><b class="a a3">A3</b></td></tr>
+            <tr><td>inactivity</td><td>Bathroom 30 min; no movement 2 h by day; not up 60 min after the usual time</td><td><b class="a a1">A1</b>, then <b class="a a4">A4</b> if no answer in 60 s</td></tr>
+            <tr><td>night exit</td><td>At the front door between 00:00 and 06:00</td><td><b class="a a1">A1</b><b class="a a4">A4</b></td></tr>
+            <tr><td>visitor</td><td>Sees family, a caregiver or a stranger; logs caregiver visits</td><td>stranger at night &rarr; <b class="a a4">A4</b></td></tr>
+            <tr><td>voice SOS</td><td>Hears &ldquo;help&rdquo;, &ldquo;dizzy&rdquo;, &ldquo;chest pain&rdquo;, &ldquo;can&rsquo;t get up&rdquo; (救命, 好暈, 胸口痛, 起不來)</td><td><b class="a a1">A1</b><b class="a a4">A4</b>; &ldquo;help&rdquo; or &ldquo;can&rsquo;t get up&rdquo; &rarr; <b class="a a5">A5</b> at once</td></tr>
+            <tr><td>companion</td><td>Family arrives, the elder talks to AhJia, reminders, daily summary</td><td><b class="a a2">A2</b> only in a GenAI window or on the host CPU. Never makes a safety decision.</td></tr>
+          </table>
+        </div>
+        <div class="card"><div class="card-head"><h2>Actions A0&ndash;A5</h2></div>
+          <div id="ladder"></div>
+          <p class="note">A1, A3, A4 and A5 are the safety path: fixed rules, first on the NPU. A2 (the LLM) runs only when it is safe.</p>
+        </div>
+        <div class="card"><div class="card-head"><h2>Three safety rules</h2></div>
+          <ol class="rules">
+            <li><b>Instant call.</b> &ldquo;Help&rdquo; or &ldquo;can&rsquo;t get up&rdquo; (救命, 起不來) calls family at once (A5). Any voice counts, even the TV.</li>
+            <li><b>30 s rule.</b> For any other alarm, if nobody answers in <span id="rule-30">30</span> s, AhJia calls (A5). Only the elder&rsquo;s own voice stops the clock.</li>
+            <li><b>Only two ways to clear.</b> The elder says &ldquo;I&rsquo;m OK&rdquo; and stands <span id="rule-5">&hellip;</span> s, or family confirms in the app. No AI can clear or lower an alert.</li>
+          </ol>
+        </div>
+        <div class="card"><div class="card-head"><h2>Frame rate per camera <small>S2 Care Router</small></h2></div>
+          <div id="fps-ladder"></div>
+          <p class="note">When the NPU is short: lower empty rooms first and the companion last. High-risk cameras always come first.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="foot-main">Laptop prototype &middot; real Care Router code &middot; Hailo-10H timing and power simulated</span>
+    <span class="foot-src" id="foot-src"></span>
+  </footer>
+  <div id="tip" class="tip" hidden></div>
+</div>
+<script type="application/json" id="ahjia-data">@@DATA@@</script>
+<script>@@APP@@</script>
+</body>
+</html>

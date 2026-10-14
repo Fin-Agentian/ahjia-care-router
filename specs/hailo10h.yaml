@@ -1,0 +1,177 @@
+# Hailo-10H / ASUS UGen300 parameters for the Stage I simulator (ahjia/residency.py).
+#
+# Every leaf has:
+#   value  - the number used by the simulator
+#   kind   - official   : published by Hailo / ASUS (or their official model zoo)
+#            estimate   : derived from cited numbers with a stated formula
+#            assumption : our placeholder; Stage II replaces it with a measurement
+#   source - where it comes from. "P:n" = proposal v4 line n; "research X:n" = ../research/X file line n.
+# Nothing in outputs/report.md is typed by hand: it all comes from these values and the replay.
+
+device:
+  name: "ASUS UGen300 (Hailo-10H, 8 GB LPDDR4)"
+  npu_capacity:
+    value: 1.0
+    unit: "NPU-seconds per second"
+    kind: assumption
+    source: "the HailoRT scheduler time-slices one network at a time, so one second of wall clock gives one second of NPU time"
+  max_utilization:
+    value: 0.8
+    kind: assumption
+    source: "headroom for KPI 2 so the queueing delay stays bounded (M/D/1 wait at 80 % load = 2 x the service time)"
+  camera_full_fps:
+    value: 30
+    unit: fps
+    kind: assumption
+    source: "typical home RTSP camera; the HUD example in DESIGN.md shows 'hallway 30 fps'"
+
+host:
+  max_streams:
+    value: 8
+    unit: "camera streams"
+    kind: assumption
+    source: "host decode cap for KPI 2: Intel N100 Quick Sync decoding 1080p H.264 camera streams (P:117); not measured, Stage II measures it"
+
+models:
+  person_detect:
+    name: yolov8n
+    fps:
+      value: 181
+      kind: official
+      source: "Hailo Model Zoo, Hailo-10H, 640x640, batch 1 (research H:58, P:388)"
+  pose:
+    name: yolov8s_pose
+    fps:
+      value: 100
+      kind: estimate
+      source: "no Hailo-10H table found (P:389, P:397). Geometric mean of two FLOP-scaled anchors: official yolov8n 181 FPS x 8.7/30.2 GFLOPs = 52 FPS, and community yolov8s ~220 FPS (research L4:44, unverified) x 28.6/30.2 = 208 FPS"
+    crop_cost_factor:
+      value: 0.25
+      kind: assumption
+      source: "zone cascade: pose runs on a 320x320 person crop instead of the 640x640 frame; FLOPs scale with pixels (needs a second HEF, Stage II)"
+  face_detect:
+    name: scrfd_2.5g
+    fps:
+      value: 520
+      kind: official
+      source: "HAILO10H_face_detection.rst, batch 1 (research H:31, P:390)"
+  face_embed:
+    name: arcface_mobilefacenet
+    fps:
+      value: 5191
+      kind: estimate
+      source: "official on the Hailo-8 list (research H:45); Hailo-10H HEF assumed compatible (P:391 marks it [to confirm])"
+  whisper:
+    name: Whisper-Base
+    load_s:
+      value: 1.34
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:123, P:392)"
+    tps:
+      value: 25.32
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:123, P:392)"
+  llm:
+    name: Qwen2.5-1.5B-Instruct
+    size_gb:
+      value: 1.64
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:127, P:394)"
+    load_s:
+      value: 5.17
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:127, P:394; P:237 rounds it to 5.2 s)"
+    ttft_s:
+      value: 0.37
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:127, P:394)"
+    tps:
+      value: 7.35
+      kind: official
+      source: "hailo_model_zoo_genai MODELS.rst v5.3.0 (research E:127, P:394)"
+
+power_w:
+  idle:
+    value: 0.5
+    kind: assumption
+    source: "no official idle figure found; Stage II measures it with a USB-C power meter (P:441-443)"
+  vision:
+    value: 2.5
+    kind: estimate
+    source: "UGen300 typical power 2.5 W [official] (research A:154, P:443), used as the power while the NPU runs CNNs"
+  llm_decode:
+    value: 2.1
+    kind: official
+    source: "Hailo blog: Qwen2-1.5B-Instruct inference average 2.1 W (research E:139, P:443)"
+  whisper:
+    value: 2.1
+    kind: assumption
+    source: "same as LLM decoding (both are generative decoders on the NPU); no official figure"
+  llm_load:
+    value: 1.5
+    kind: assumption
+    source: "HEF transfer over USB plus DRAM writes; no official figure"
+  llm_resident_extra:
+    value: 0.0
+    kind: assumption
+    source: "DRAM refresh power does not depend on what the memory holds; Stage II checks whether a loaded but idle LLM costs anything"
+
+pipeline:
+  face_confirm_s:
+    value: 1.5
+    kind: assumption
+    source: "P:489 scenario 1: identity confirmed after 1.5 s of continuous ArcFace matches"
+  vad_tail_s:
+    value: 0.3
+    kind: assumption
+    source: "Silero VAD end-of-speech hangover before the segment is cut (P:396)"
+  whisper_tokens_per_word:
+    value: 1.3
+    kind: assumption
+    source: "English words per Whisper token (rule of thumb)"
+  whisper_tokens_per_cjk_char:
+    value: 1.0
+    kind: assumption
+    source: "one Whisper token per Chinese character (rule of thumb)"
+  whisper_overhead_tokens:
+    value: 4
+    kind: assumption
+    source: "start, language, task and end tokens per segment"
+  router_decision_s:
+    value: 0.001
+    kind: estimate
+    source: "P:126 and P:395: router and agents < 1 ms per decision [inference]"
+  tts_first_audio_s:
+    value: 0.5
+    kind: assumption
+    source: "Piper TTS on the host CPU, RTF < 1 on x86 (P:397); time to the first audible sentence"
+  notify_s:
+    value: 1.0
+    kind: assumption
+    source: "notification gateway sends event text to the family app (P:131)"
+  call_dial_s:
+    value: 2.0
+    kind: assumption
+    source: "P:519-520 scenario 3: A5 at T+7 s, phone call out at T+9 s"
+  llm_first_sentence_tokens:
+    value: 10
+    kind: assumption
+    source: "TTS starts after the first short sentence of the reply"
+  llm_reply_tokens:
+    value: 40
+    kind: assumption
+    source: "a short spoken companion reply"
+
+contention:
+  no_qos_load_blocks_vision:
+    value: 1
+    kind: assumption
+    source: "without safety-first QoS, configuring the LLM network group stalls the other networks until the load ends; Stage II W1 verifies pose + Whisper + LLM sharing (research L4:109)"
+  no_qos_wait_steps:
+    value: 1
+    kind: assumption
+    source: "without QoS the scheduler round-robins at LLM step granularity, so each vision frame or Whisper token waits one LLM decode step (1 / LLM tps)"
+  qos_wait_s:
+    value: 0.0
+    kind: assumption
+    source: "S2 safety-first QoS: vision and Whisper have scheduler priority and the LLM load is chunked, so the safety path never waits for the LLM (HailoRT scheduler priority; verify in Stage II)"

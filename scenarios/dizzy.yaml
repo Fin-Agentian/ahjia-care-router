@@ -1,0 +1,16 @@
+# Scenario 2 (voice SOS path): "I feel a bit dizzy" (P:494-505).
+# 暈 is a soft SOS word: A1 + A4, an LLM follow-up if the daytime window is open,
+# then A5 because she does not answer for 30 s.
+name: dizzy
+title: "Scenario 2: '我有點暈' (I feel a bit dizzy), no answer for 30 s"
+source: "P:494-505"
+start_clock: "10:20:00"
+cameras: [living, hallway, bathroom_door, front_door]
+elder_alone: true
+duration_s: 60
+labels:
+  - {t: 5, kind: high_risk, what: "SOS word 暈 (dizzy)"}
+  - {t: 5, kind: no_answer, what: "no answer for 30 s -> A5", window_s: 45}
+events:
+  - {t: 0, camera: living, persons: [{track_id: 1, identity: elder, posture: sit, zone: sofa}]}
+  - {t: 5, speech: {text: "我有點暈", source: elder, directed: false, lang: zh}}

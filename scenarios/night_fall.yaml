@@ -1,0 +1,15 @@
+# Scenario 3 (fall path): night fall in the hallway, GenAI off, vision only (P:511-522).
+name: night_fall
+title: "Scenario 3: night fall (GenAI off, vision only)"
+source: "P:511-522"
+start_clock: "02:10:00"
+cameras: [living, hallway, bathroom_door, front_door]
+elder_alone: true
+duration_s: 60
+labels:
+  - {t: 12, kind: high_risk, what: fall}
+  - {t: 19, kind: sos_immediate, what: "I can't get up"}
+events:
+  - {t: 0, camera: hallway, persons: [{track_id: 1, identity: elder, posture: stand, zone: hallway}]}
+  - {t: 12, camera: hallway, persons: [{track_id: 1, identity: elder, posture: lie, zone: floor}]}
+  - {t: 19, speech: {text: "I can't get up", source: elder, directed: false}}
